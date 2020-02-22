@@ -1,0 +1,106 @@
+body{
+    background:no-repeat;
+    background-size: cover;
+    padding:0;
+    margin:0;  
+    font-family: 'Roboto', sans-serif;
+}
+
+.panel{
+    clear: none; 
+    height:100vh;
+}
+
+#leftPanel{
+    float:left;
+}
+
+#rightPanel{
+    float:right;
+}
+
+
+#content{
+    float:left;
+    width:500px;
+    height:100%;
+    background-color: RGBA(0,0,0,0.7);
+}
+
+#fade{
+    float:left;
+    width:200px;
+    height:100%;
+}
+
+ 
+
+.widget{
+	padding:10px;
+    padding-bottom:50px;
+    padding-top:50px;
+    margin:10px;
+}
+
+h1,h2,h3,h4{
+	color:white;
+	margin:0;
+	text-align:center;
+}
+
+
+.divider{
+    background-color: white;
+    margin: auto;
+    width:90%;
+    height:1px;
+}
+
+
+#jobsWidget h1{
+    margin-bottom:15px;
+}
+
+
+
+#time{
+	font-size:90px;
+}
+#date{
+	font-size:40px;
+}
+
+#joke{
+    color:white;
+	font-size:20px;
+    text-align: center;
+}
+
+.job{
+	color:white;
+	font-size:20px;
+	padding-left:20px;
+}
+
+.person{
+	color:white;
+	font-size:30px;
+	padding-left:10px;
+	font-weight:bold;
+}
+
+.job-icon{
+	padding:3px;
+	padding-left:30px;
+}
+
+#backgroundTitle{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding:5px;
+    padding-left:10px;
+    padding-right:10px;
+    margin:5px;
+    background-color: RGBA(0,0,0,0.7);
+}
