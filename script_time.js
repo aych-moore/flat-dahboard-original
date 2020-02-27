@@ -11,7 +11,7 @@ function timeUpdate(){
   var hours = now.getHours();
   var minutes = now.getMinutes();
   var ampm = hours >= 12 ? "PM" : "AM";
-  var padMinutes = hours < 10 ? "0" : "";
+  var padMinutes = minutes < 10 ? "0" : "";
   hours = hours > 12 ? hours-12 : hours; //convert to 12 hour
   time = hours + ":" + padMinutes + minutes + ampm;
   
