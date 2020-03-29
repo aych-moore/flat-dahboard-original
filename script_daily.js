@@ -39,7 +39,7 @@ function dailyUpdate() {
 	}
 
 	var yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 1);
+	yesterday.setDate(yesterday.getDate() - 2);
 	var weekNumber = yesterday.getWeek();
 	console.log(weekNumber);
 
