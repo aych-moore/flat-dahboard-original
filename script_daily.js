@@ -1,4 +1,4 @@
-var names = ['Shara', 'Hayden', 'Mark', 'Kyle'];
+var names = ['Etienne', 'Hayden', 'Heath'];
 var urlBackground = "https://www.reddit.com/r/wallpapers/top.json?t=day&limit=1";
 var urlJoke = "https://icanhazdadjoke.com/";
 
@@ -43,12 +43,11 @@ function dailyUpdate() {
 	var weekNumber = yesterday.getWeek();
 	console.log(weekNumber);
 
-	var rosterWeek = weekNumber % 4; //itterates weekly, 0,1,2,3 repeating
+	var rosterWeek = weekNumber % 3; //itterates weekly, 0,1,2,3 repeating
 
-	document.getElementById('p1').innerHTML = names[rosterWeek % 4];
-	document.getElementById('p2').innerHTML = names[(rosterWeek + 1) % 4];
-	document.getElementById('p3').innerHTML = names[(rosterWeek + 2) % 4];
-	document.getElementById('p4').innerHTML = names[(rosterWeek + 3) % 4];
+	document.getElementById('p1').innerHTML = names[rosterWeek % 3];
+	document.getElementById('p2').innerHTML = names[(rosterWeek + 1) % 3];
+	document.getElementById('p3').innerHTML = names[(rosterWeek + 2) % 3];
     
     
     setTimeout(dailyUpdate, 3600000); //hourly
