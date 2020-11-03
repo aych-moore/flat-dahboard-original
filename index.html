@@ -1,44 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Flat Noticeboard</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="icon.png">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="icon.png" />
+  </head>
 
-
-    
-</head>
-
-<body>
+  <body>
     <div id="leftPanel" class="panel">
-        <div id="content">
-            <div class="widget" id="timeAndDateWidget">
-                <h1 id="time">Loading time...</h1>
-                <h1 id="date">Loading date...</h1>
-            </div>
-            <div class="divider"></div>
-            <div class="widget" id="jokeWidget">
-                <h1>J O K E</h1>
-                <p id="joke">Loading joke...</p>
-            </div>
-            <div class="divider"></div>
-            <div class="widget" id="jobsWidget">
-                <h1>J O B S</h1>
-                <table cellspacing="0">
-                    <tr><td><img class="job-icon" src="images/vacuum.png"></td><td class="job">• Vacuum flat</td><td class="person" id="p1">FAILED</td></tr>
-                    <tr><td><img class="job-icon" src="images/wipe.png"></td><td class="job">• Clean kitchen<br>• Wash tea towels<br></td><td class="person" id="p2">FAILED</td></tr>
-                    <tr><td><img class="job-icon" src="images/bin.png"></td><td class="job">• Empty bins</td><td class="person" id="p3">FAILED</td></tr>
-                </table>
-            </div>
+      <div id="content">
+        <div class="widget" id="timeAndDateWidget">
+          <h1 id="time">Loading time...</h1>
+          <h1 id="date">Loading date...</h1>
         </div>
-    </div>   
-	<!--
+        <div class="divider"></div>
+        <div class="widget" id="jokeWidget">
+          <h1>J O K E</h1>
+          <p id="joke">Loading joke...</p>
+        </div>
+        <div class="divider"></div>
+        <div class="widget" id="jokeWidget">
+          <h1>D A Y</h1>
+          <p id="event">Loading event...</p>
+        </div>
+        <div class="divider"></div>
+        <div class="widget" id="jobsWidget">
+          <h1>J O B S</h1>
+          <table cellspacing="0">
+            <tr>
+              <td><img class="job-icon" src="images/vacuum.png" /></td>
+              <td class="job">• Vacuum flat</td>
+              <td class="person" id="p1">FAILED</td>
+            </tr>
+            <tr>
+              <td><img class="job-icon" src="images/wipe.png" /></td>
+              <td class="job">• Clean kitchen<br />• Wash tea towels<br /></td>
+              <td class="person" id="p2">FAILED</td>
+            </tr>
+            <tr>
+              <td><img class="job-icon" src="images/bin.png" /></td>
+              <td class="job">• Empty bins</td>
+              <td class="person" id="p3">FAILED</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--
     <div id="rightPanel" class="panel">
         <div id="content">
             
@@ -46,19 +59,12 @@
     </div>
 	-->
 
-
     <div id="backgroundTitleWidget">
-        <h3 id="backgroundTitle">Loading background title...</h3>
+      <h3 id="backgroundTitle">Loading background title...</h3>
     </div>
 
-    
-
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="script_time.js"></script>
     <script src="script_daily.js"></script>
-
-    
-</body>
-
+  </body>
 </html>
