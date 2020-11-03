@@ -1,61 +1,45 @@
-
 var names = ['Etienne', 'Hayden', 'Heath'];
 var urlBackground = "https://www.reddit.com/r/wallpapers/top.json?t=day&limit=1";
 var urlJoke = "https://icanhazdadjoke.com/";
-var days = {};
 
-async function setup() {
-	var req = await fetch("./days.json", {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	})
-	days = await req.json()
+async function setImg() {
+	var body = document.getElementsByTagName('body')[0];
+	var back = await fetch(urlBackground)
+	var jsn = (await back.json())["data"]["children"][0]["data"];
+	document.getElementById('backgroundTitle').innerHTML = jsn["title"];
+	body.style.backgroundImage = `url(${jsn["url"]})`;
 }
-setup()
 
-async function dailyUpdate() {
-	//background
-	const Http = new XMLHttpRequest();
-	const url = urlBackground;
-	Http.open("GET", url);
-	Http.send();
+async function setJoke() {
+	var back = await fetch("https://icanhazdadjoke.com/", {
+		headers: {
+			Accept: "application/json"
+		}
+	})
+	var jsn = await back.json();
+	document.getElementById('joke').innerHTML = jsn["joke"]
+}
 
-	Http.onreadystatechange = (e) => {
-		var reply = Http.responseText;
-
-		var urlImage = JSON.parse(reply).data.children[0].data.url;
-		var imageTitle = JSON.parse(reply).data.children[0].data.title;
-		var body = document.getElementsByTagName('body')[0];
-
-		console.log(urlImage);
-		body.style.backgroundImage = 'url(' + urlImage + ')';
-		document.getElementById('backgroundTitle').innerHTML = imageTitle;
-	}
-
-
-	//joke
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open("GET", urlJoke, false); // false for synchronous request
-	xmlHttp.setRequestHeader("Accept", "application/json");
-	xmlHttp.send(null);
-	var joke = JSON.parse(xmlHttp.responseText).joke;
-	document.getElementById('joke').innerHTML = joke;
-
+async function setDay() {
 	var req = await fetch("./days.json", {
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	})
 	var days = await req.json()
-	//day
 	var date = new Date(Date.now())
-	var formed = `${date.getDate()}-${date.getMonth() + 1}`
 	var text = "";
-	days[formed].forEach(e => {
+	days[`${date.getDate()}-${date.getMonth() + 1}`].forEach(e => {
 		text += `${e}<br>`
 	});
 	document.getElementById('event').innerHTML = text
+}
+
+async function dailyUpdate() {
+	//Set Image, Day, and Joke
+	setImg();
+	setJoke();
+	setDay();
 
 	//flat job roster
 	Date.prototype.getWeek = function () {
@@ -68,16 +52,13 @@ async function dailyUpdate() {
 	var weekNumber = yesterday.getWeek();
 	console.log(weekNumber);
 
-	var rosterWeek = weekNumber % 3; //itterates weekly, 0,1,2,3 repeating
+	var rosterWeek = weekNumber % 3; //iterates weekly, 0,1,2 repeating
 
 	document.getElementById('p1').innerHTML = names[rosterWeek % 3];
 	document.getElementById('p2').innerHTML = names[(rosterWeek + 1) % 3];
 	document.getElementById('p3').innerHTML = names[(rosterWeek + 2) % 3];
-
-
-	setTimeout(dailyUpdate, 3600000); //hourly
-	console.log("CLOCK");
 }
+
 function timeUpdate() {
 	var now = new Date(), // current date
 		months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -85,6 +66,7 @@ function timeUpdate() {
 	months[now.getMonth()],
 	now.getFullYear()].join(' ');
 	document.getElementById('date').innerHTML = date;
+	var day = now.getDate()
 
 	var hours = now.getHours();
 	var minutes = now.getMinutes();
@@ -93,12 +75,18 @@ function timeUpdate() {
 	hours = hours > 12 ? hours - 12 : hours; //convert to 12 hour
 	time = hours + ":" + padMinutes + minutes + ampm;
 
+	if (now.getMinutes() < 2) {
+		if (now.getHours() == 4) {
+			dailyUpdate()
+		} else {
+			setJoke()
+		}
+	}
 	document.getElementById('time').innerHTML = time;
-
 
 	setTimeout(timeUpdate, 1000 * 60); //repeat every 1 minute
 	console.log("CLOCK TICK");
 }
 
-dailyUpdate();
 timeUpdate();
+dailyUpdate();
