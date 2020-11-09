@@ -2,6 +2,7 @@ var names = ['Etienne', 'Hayden', 'Heath'];
 var urlBackground = "https://www.reddit.com/r/wallpapers/top.json?t=day&limit=1";
 var urlJoke = "https://icanhazdadjoke.com/";
 
+
 async function setImg() {
 	var body = document.getElementsByTagName('body')[0];
 	var back = await fetch(urlBackground)
@@ -76,7 +77,7 @@ function timeUpdate() {
 	time = hours + ":" + padMinutes + minutes + ampm;
 
 	if (now.getMinutes() < 2) {
-		if (now.getHours() == 4) {
+		if (now.getHours() == 0) {
 			dailyUpdate()
 		} else {
 			setJoke()
