@@ -101,3 +101,11 @@ h4 {
   margin: 5px;
   background-color: RGBA(0, 0, 0, 0.7);
 }
+
+.done-true {
+  color: #7f7;
+}
+
+.done-false {
+  color: #f77;
+}
