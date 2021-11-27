@@ -22,7 +22,7 @@ async function setImg() {
 
 async function setJoke(currentDate) {
 	// only update every 5 min
-	if (lastUpdatedJoke?.getTime() + (1000 * 60 * 5) > currentDate.getTime()) return;
+	if (lastUpdatedJoke && lastUpdatedJoke.getTime() + (1000 * 60 * 5) > currentDate.getTime()) return;
 	lastUpdatedJoke = currentDate;
 
 	const res = await (await fetch("https://icanhazdadjoke.com/", {
@@ -49,7 +49,7 @@ async function setWackyDay(currentDate) {
 }
 
 function setDay(currentDate) {
-	if (lastUpdatedDay?.getDate() === currentDate.getDate()) return;
+	if (lastUpdatedDay && lastUpdatedDay.getDate() === currentDate.getDate()) return;
 	lastUpdatedDay = currentDate;
 
 	// set date
