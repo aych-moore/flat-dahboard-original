@@ -4,21 +4,33 @@ var urlJoke = "https://icanhazdadjoke.com/";
 
 
 async function setImg() {
-	var body = document.getElementsByTagName('body')[0];
-	var back = await fetch(urlBackground)
-	var jsn = (await back.json())["data"]["children"][0]["data"];
-	document.getElementById('backgroundTitle').innerHTML = jsn["title"];
-	body.style.backgroundImage = `url(${jsn["url"]})`;
+	var res = (await (await fetch(urlBackground)).json())
+	const firstEntry = res.data.children[0].data
+	let back = firstEntry.url
+
+
+	console.log(firstEntry)
+
+	// find first image in post (since update allows multiple images)
+	if (firstEntry.media_metadata) {
+		back = Object.entries(firstEntry.media_metadata)[0][1].s.u.replaceAll("&amp;", "&")
+	}
+
+	document.getElementById('backgroundTitle').innerHTML = firstEntry.title;
+	document.getElementsByTagName('body')[0].style.backgroundImage = `url(${back})`;
 }
 
-async function setJoke() {
-	var back = await fetch("https://icanhazdadjoke.com/", {
+async function setJoke(currentDate) {
+	// only update every 5 min
+	if (lastUpdatedJoke?.getTime() + (1000 * 60 * 5) > currentDate.getTime()) return
+	lastUpdatedJoke = currentDate;
+
+	const res = await (await fetch("https://icanhazdadjoke.com/", {
 		headers: {
 			Accept: "application/json"
 		}
-	})
-	var jsn = await back.json();
-	document.getElementById('joke').innerHTML = jsn["joke"]
+	})).json()
+	document.getElementById('joke').innerHTML = res["joke"]
 }
 
 async function setDay() {
