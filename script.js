@@ -13,7 +13,12 @@ async function setImg() {
 
 	// find first image in post (since update allows multiple images)
 	if (firstEntry.media_metadata) {
-		back = Object.entries(firstEntry.media_metadata)[0][1].s.u.replaceAll("&amp;", "&")
+		back = Object.entries(firstEntry.media_metadata)[0][1].s.u
+
+		// change url encoding
+		while (back.includes("&amp;")) {
+			back = back.replace("&amp;", "&")
+		}
 	}
 
 	document.getElementById('backgroundTitle').innerHTML = firstEntry.title;
