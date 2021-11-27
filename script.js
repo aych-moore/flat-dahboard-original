@@ -1,15 +1,15 @@
-var names = ['Etienne', 'Hayden', 'Heath'];
-var urlBackground = "https://www.reddit.com/r/wallpapers/top.json?t=day&limit=1";
-var urlJoke = "https://icanhazdadjoke.com/";
+const names = ['Etienne', 'Hayden', 'Heath'];
+const urlBackground = "https://www.reddit.com/r/wallpapers/top.json?t=day&limit=1";
+const urlJoke = "https://icanhazdadjoke.com/";
+let daysJson;
+let lastUpdatedDay;
+let lastUpdatedJoke;
 
 
 async function setImg() {
 	var res = (await (await fetch(urlBackground)).json())
 	const firstEntry = res.data.children[0].data
 	let back = firstEntry.url
-
-
-	console.log(firstEntry)
 
 	// find first image in post (since update allows multiple images)
 	if (firstEntry.media_metadata) {
@@ -33,38 +33,42 @@ async function setJoke(currentDate) {
 	document.getElementById('joke').innerHTML = res["joke"]
 }
 
-async function setDay() {
-	var req = await fetch("./days.json", {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	})
-	var days = await req.json()
-	var date = new Date(Date.now())
-	var text = "";
-	days[`${date.getDate()}-${date.getMonth() + 1}`].forEach(e => {
-		text += `${e}<br>`
+async function setWackyDay(currentDate) {
+	if (daysJson === undefined) {
+		daysJson = await ((await fetch("./days.json", {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})).json())
+	}
+	let text = "";
+	daysJson[`${currentDate.getDate()}-${currentDate.getMonth() + 1}`].forEach(e => {
+		text += `<p class="done-${e.complete}">${e.day}<p>`
 	});
 	document.getElementById('event').innerHTML = text
 }
 
-async function dailyUpdate() {
-	//Set Image, Day, and Joke
-	setImg();
-	setJoke();
-	setDay();
+function setDay(currentDate) {
+	if (lastUpdatedDay?.getDate() === currentDate.getDate()) return
+	lastUpdatedDay = currentDate;
 
-	//flat job roster
-	Date.prototype.getWeek = function () {
-		var onejan = new Date(this.getFullYear(), 0, 1);
-		return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+	// set date
+	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	const date = `${currentDate.getDate()} ${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+	document.getElementById('date').innerHTML = date;
+
+	setImg();
+	setWackyDay(currentDate);
+	// setRoster(currentDate);
+}
+
+function setRoster(currentDate) {
+	const getWeek = () => {
+		const oneJan = new Date(currentDate.getFullYear(), 0, 1);
+		return Math.ceil((((currentDate - oneJan) / 86400000) + oneJan.getDay() + 1) / 7);
 	}
 
-	var yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 2);
-	var weekNumber = yesterday.getWeek();
-	console.log(weekNumber);
-
+	var weekNumber = getWeek();
 	var rosterWeek = weekNumber % 3; //iterates weekly, 0,1,2 repeating
 
 	document.getElementById('p1').innerHTML = names[rosterWeek % 3];
@@ -72,34 +76,37 @@ async function dailyUpdate() {
 	document.getElementById('p3').innerHTML = names[(rosterWeek + 2) % 3];
 }
 
-function timeUpdate() {
-	var now = new Date(), // current date
-		months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-	date = [now.getDate(),
-	months[now.getMonth()],
-	now.getFullYear()].join(' ');
-	document.getElementById('date').innerHTML = date;
-	var day = now.getDate()
+function setTime(currentDate) {
+	const hours = currentDate.getHours();
+	let minutes = currentDate.getMinutes();
+	minutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
 
-	var hours = now.getHours();
-	var minutes = now.getMinutes();
-	var ampm = hours >= 12 ? "PM" : "AM";
-	var padMinutes = minutes < 10 ? "0" : "";
-	hours = hours > 12 ? hours - 12 : hours; //convert to 12 hour
-	time = hours + ":" + padMinutes + minutes + ampm;
-
-	if (now.getMinutes() < 2) {
-		if (now.getHours() == 0) {
-			dailyUpdate()
-		} else {
-			setJoke()
-		}
+	if (hours > 12) {
+		time = `${hours - 12}:${minutes}PM`;
+	} else {
+		time = `${hours}:${minutes}AM`;
 	}
 	document.getElementById('time').innerHTML = time;
-
-	setTimeout(timeUpdate, 1000 * 60); //repeat every 1 minute
-	console.log("CLOCK TICK");
 }
 
-timeUpdate();
-dailyUpdate();
+function loop() {
+	const currentDate = new Date();
+
+	setDay(currentDate);
+	setJoke(currentDate);
+	setTime(currentDate);
+
+	setTimeout(loop, 1000 * 5); //repeat every 5 seconds
+}
+
+async function refresh() {
+	const currentDate = new Date();
+	lastUpdatedJoke = undefined;
+	lastUpdatedDay = undefined;
+
+	setDay(currentDate);
+	setJoke(currentDate);
+	setTime(currentDate);
+}
+
+loop();
